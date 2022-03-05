@@ -32,12 +32,9 @@ public class Gate : MonoBehaviour
     {
         if(obj.gameObject.tag == "Arrow")
         {
-            Debug.Log("Gate ENTER...");
+            gameObject.GetComponent<BoxCollider>().enabled = false;
 
-            if(operatorChoice == "Add") ArrowContainer.ArrowCount += valueToCalculate; 
-            else if(operatorChoice == "Subtract") ArrowContainer.ArrowCount -= valueToCalculate; 
-            else if(operatorChoice == "Multiply") ArrowContainer.ArrowCount *= valueToCalculate; 
-            else if(operatorChoice == "Divide") ArrowContainer.ArrowCount /= valueToCalculate;
+            ArrowContainer.CalculateArrow(operatorChoice, valueToCalculate);
         }
     }
 

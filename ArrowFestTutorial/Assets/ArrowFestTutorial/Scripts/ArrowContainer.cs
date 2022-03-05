@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ArrowContainer : MonoBehaviour
 {
 
-    [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private Transform arrowPrefab;
     [SerializeField] private List<Transform> arrows = new List<Transform>();
-    [Range(1,300)] [SerializeField]private int arrowCount;
+    [SerializeField] private GameController gameController;
+    private int arrowCount;
+    private float c = 5.25f;
+    private float radiusScale = 0.0001f;
+    
 
     public int ArrowCount { get { return arrowCount; } set { arrowCount = value; }}
+    public List<Transform> Arrows { get { return arrows; }}
 
     void Start()
     {
@@ -22,9 +27,7 @@ public class ArrowContainer : MonoBehaviour
 
     void Update()
     {
-        transform.position = transform.position + Vector3.forward * movementSpeed * Time.deltaTime;
-
-        /* if(arrowCount > arrows.Count)
+        if(arrowCount > arrows.Count)
         {
             CreateArrow();
         }
@@ -35,7 +38,7 @@ public class ArrowContainer : MonoBehaviour
         else
         {
             CollateArrow();
-        } */
+        }
     }
 
     void CreateArrow()
@@ -46,7 +49,6 @@ public class ArrowContainer : MonoBehaviour
             arrows.Add(newArrow);
             newArrow.transform.localPosition = Vector3.zero;
         }
-
         CollateArrow();
     }
 
@@ -58,26 +60,39 @@ public class ArrowContainer : MonoBehaviour
             arrows.RemoveAt(i);
             Destroy(arrowToDestroy.gameObject);
         }
-
         CollateArrow();
     }
 
     void CollateArrow()
     {
-        float angle = 360.0f / arrows.Count;
-
-        for (int i = 0; i < arrows.Count; i++)
+        for(int i = 1; i <= arrows.Count; i++)
         {
-            MoveArrows(arrows[i], i * angle);
+            float phi = c * Mathf.Sqrt(i);
+            float r = i * 137.3f * radiusScale;
+            Vector3 point = new Vector3( Mathf.Cos(phi) * r , Mathf.Sin(phi) * r , 0 );
+            arrows[i-1].localPosition = point;
         }
     }
 
-    void MoveArrows(Transform objTransform, float degree)
+    public void CalculateArrow(string opr, int value)
     {
-        Vector3 pos = Vector3.zero;
-        pos.x = Mathf.Cos(degree * Mathf.Deg2Rad);
-        pos.y = Mathf.Sin(degree * Mathf.Deg2Rad);
+        if(opr == "Add") arrowCount += value; 
+        else if(opr == "Subtract") arrowCount -= value; 
+        else if(opr == "Multiply") arrowCount *= value; 
+        else if(opr == "Divide") arrowCount /= value;
 
-        objTransform.localPosition = pos;
+        arrowCount = Mathf.Clamp(arrowCount, 0, 360);
+
+        CheckArrowCount();
+    }
+
+    void CheckArrowCount()
+    {
+        // Oyun içinde arrow count 0 olduğunda gameController içindeki Fail paneli aktif edilir.
+        if(arrowCount <= 0)
+        {
+            gameObject.SetActive(false);
+            gameController.IsFail = true;
+        }
     }
 }
