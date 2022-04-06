@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SkyboxClouds
-  m_Shader: {fileID: -6465566751694194690, guid: 878b06532cd01284c937964ca93f68d0, type: 3}
+  m_Name: GradientSkybox
+  m_Shader: {fileID: 4800000, guid: b9946ecd40cf0fb4caa3c70735da3e87, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,10 +19,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_9841fc1e9d28498c9f2a415389ad4d88:
-        m_Texture: {fileID: 2800000, guid: bc1ed045a9415ee40bbaf2792a862b1b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -80,9 +76,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_47da84dfbcab4c35beca8635a84093d1: 0.5
-    - Vector1_70782b9e36e34869b5f4c3b5d5f70445: 0.72
-    - Vector1_8c0fed0005b444d08027127bc03411d6: 0.1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -94,6 +87,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _Exp: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -110,18 +104,15 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_17595daed6f8419da57b4b4b187fac58: {r: 0.7372549, g: 0.15294118, b: 0.19607843, a: 0}
-    - Color_49041244ff25408b8d9d2d2416b26a7e: {r: 1, g: 1, b: 1, a: 0}
-    - Color_5170125dc339497f83c77cc09328b966: {r: 0.94509804, g: 0.95686275, b: 0.94509804, a: 0}
-    - Color_b4ed042e0a584f7bbac8d7e49cef3273: {r: 0.24705882, g: 0.4117647, b: 0.92156863, a: 0}
-    - Vector2_79a92194b07949b29a4461d3e6f4cb97: {r: 0.1, g: 0.1, b: 0, a: 0}
-    - Vector2_e9b35f106ba041e49b005dc2bb1eead1: {r: 0.1, g: 0.01, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BottomColor: {r: 0.7372549, g: 0.15294118, b: 0.19607843, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TopColor: {r: 0.20392157, g: 0.20392157, b: 0.20784314, a: 0}
+    - _Up: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &5522119853191447055
+--- !u!114 &1814972439856825692
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

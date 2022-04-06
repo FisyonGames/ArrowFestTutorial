@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: e15f45583992e2444b8d67d1d79a23fb, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 14d36650d4c3cc644a54e8ceafc93d85, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.42861307, g: 0.22270449, b: 0.29904446, a: 1}
+  m_IndirectSpecularColor: {r: 0.26852652, g: 0.02730487, b: 0.033733398, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -427,6 +427,7 @@ GameObject:
   - component: {fileID: 250199437}
   - component: {fileID: 250199436}
   - component: {fileID: 250199438}
+  - component: {fileID: 250199439}
   m_Layer: 0
   m_Name: ArrowContainer
   m_TagString: Untagged
@@ -448,8 +449,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowPrefab: {fileID: 3224066990809236170, guid: 5eaddd3510f09ea4e8386b05c0326791, type: 3}
   arrows: []
-  arrowCount: 1
   gameController: {fileID: 2121537270}
+  degree: 137.52313
+  dotScale: 0.1
 --- !u!4 &250199437
 Transform:
   m_ObjectHideFlags: 0
@@ -478,6 +480,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 15
   speedForLeftRightMovement: 15
+  leftClampXPositionValue: -4.1
+  rightClampXPositionValue: 4.1
+--- !u!114 &250199439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250199435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff2e05d6a52094a9c912159dadbd4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tap: 0
+  swipeLeft: 0
+  swipeRight: 0
+  swipeUp: 0
+  swipeDown: 0
+  swipeDelta: {x: 0, y: 0}
+  startTouch: {x: 0, y: 0}
 --- !u!1001 &250725127
 PrefabInstance:
   m_ObjectHideFlags: 0

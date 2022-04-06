@@ -21,16 +21,16 @@ public class GameController : MonoBehaviour
     {
         levelCompletedPanel.gameObject.SetActive(false);
         failPanel.gameObject.SetActive(false);
-        arrowContainer.GetComponent<ArrowContainerMovement>().enabled = false;
+        //arrowContainer.GetComponent<ArrowContainerMovement>().enabled = false;
     }
 
     void Update()
     {
-        // Sol veya sağ ok tuşları ile hareket başlatılır...Bu tuşlarla kontrol edilir.
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow))
+        /* // Sol veya sağ ok tuşları ile hareket başlatılır...Bu tuşlarla kontrol edilir.
+        if (Input.touchCount > 0 || Input.anyKeyDown)
         {
             arrowContainer.GetComponent<ArrowContainerMovement>().enabled = true;
-        }
+        } */
 
         if(IsLevelCompleted) Invoke("ActivateLevelCompletedPanel", 2.0f);
         if(isFail) failPanel.gameObject.SetActive(true);
