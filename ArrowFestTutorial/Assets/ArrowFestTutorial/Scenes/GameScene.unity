@@ -156,7 +156,7 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 909092258}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &13498290
 MonoBehaviour:
@@ -1048,7 +1048,7 @@ Transform:
   m_LocalScale: {x: 20, y: 1, z: 5}
   m_Children: []
   m_Father: {fileID: 909092258}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &509440817
 BoxCollider:
@@ -1471,9 +1471,9 @@ Transform:
   - {fileID: 857761274}
   - {fileID: 1975611692}
   - {fileID: 384319071}
-  - {fileID: 509440816}
   - {fileID: 976168297}
   - {fileID: 13498289}
+  - {fileID: 509440816}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1588,7 +1588,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 909092258}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &976168298
 BoxCollider:
@@ -2878,8 +2878,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98644839c0bdb4d47b9d5a3ddd7afb28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrowContainer: {fileID: 250199437}
-  target: {fileID: 13498289}
   levelCompletedPanel: {fileID: 557233426}
   failPanel: {fileID: 359988236}
 --- !u!1001 &1468108683465624785
@@ -2889,6 +2887,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 821850024}
     m_Modifications:
+    - target: {fileID: 1468108682803852091, guid: e369d18a46ce1e74dae591544836ca87, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1468108684527327047, guid: e369d18a46ce1e74dae591544836ca87, type: 3}
       propertyPath: m_Name
       value: Gate
