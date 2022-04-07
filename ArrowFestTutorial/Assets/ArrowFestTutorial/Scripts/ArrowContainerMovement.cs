@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ArrowContainerMovement : MonoBehaviour
 {
-    [SerializeField] [Range(5,25)] private float movementSpeed = 20f;
-    [SerializeField] [Range(5,25)] private float speedForLeftRightMovement = 20f;
+    [SerializeField] [Range(5,50)] private float movementSpeed = 20f;
+    [SerializeField] [Range(5,50)] private float speedForLeftRightMovement = 20f;
     [SerializeField] private float leftClampXPositionValue = -4.1f;
     [SerializeField] private float rightClampXPositionValue = 4.1f;
     private bool isMoving = false;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using TMPro;
 
 public class ArrowContainer : MonoBehaviour
 {
@@ -20,6 +20,7 @@ public class ArrowContainer : MonoBehaviour
     void Start()
     {
         arrowCount = 1;
+
         Transform firstArrow = Instantiate(arrowPrefab, transform);
         arrows.Add(firstArrow);
         firstArrow.transform.localPosition = Vector3.zero;
@@ -88,6 +89,7 @@ public class ArrowContainer : MonoBehaviour
 
     void CheckArrowCount()
     {
+
         // Oyun içinde arrow count 0 olduğunda gameController içindeki Fail paneli aktif edilir.
         if(arrowCount <= 0)
         {
