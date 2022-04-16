@@ -23,18 +23,13 @@ public class Gate : MonoBehaviour
         SetText();
     }
 
-    void Update()
-    {
-        
-    }
-
     void OnTriggerEnter(Collider obj)
     {
-        if(obj.gameObject.tag == "Arrow")
+        if(obj.gameObject.tag == "ArrowContainer")
         {
             gameObject.GetComponent<BoxCollider>().enabled = false;
-
-            ArrowContainer.CalculateArrow(operatorChoice, valueToCalculate);
+            if(operatorChoice == "Add" || operatorChoice == "Multiply") FindObjectOfType<AudioManager>().Play("AddArrow");
+            if(operatorChoice == "Subtract" || operatorChoice == "Divide") FindObjectOfType<AudioManager>().Play("DestroyArrow");
         }
     }
 

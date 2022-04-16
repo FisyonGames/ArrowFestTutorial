@@ -6,6 +6,14 @@ TagManager:
   tags:
   - Arrow
   - ArrowContainer
+  - RightWall
+  - FinalPoint
+  - LeftWall
+  - Gate
+  - FinalArea
+  - Target
+  - BowlingPin
+  - EndPoint
   layers:
   - Default
   - TransparentFX

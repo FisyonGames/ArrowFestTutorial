@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class ArrowContainerMovement : MonoBehaviour
 {
-    [SerializeField] [Range(5,50)] private float movementSpeed = 20f;
-    [SerializeField] [Range(5,50)] private float speedForLeftRightMovement = 20f;
+    [SerializeField] [Range(5,50)] private float movementSpeed = 25f;
+    [SerializeField] [Range(5,50)] private float speedForLeftRightMovement = 25f;
     [SerializeField] private float leftClampXPositionValue = -4.1f;
     [SerializeField] private float rightClampXPositionValue = 4.1f;
+
     private bool isMoving = false;
-    private bool isRightMovement = false;
-    private bool isLeftMovement = false;
     private bool isFinalMovement = false;
+
+    public bool IsFinalMovement { get { return isFinalMovement; } set { isFinalMovement = value; }}
 
     void Start()
     {
@@ -33,22 +34,8 @@ public class ArrowContainerMovement : MonoBehaviour
         }
         if(isFinalMovement)
         {
+            if(isMoving) isMoving = false;
             FinalMovement();
-        }
-
-        CheckArrowsFinalPointCollision();
-    }
-
-    void CheckArrowsFinalPointCollision()
-    {
-        foreach (var arrow in transform.GetComponent<ArrowContainer>().Arrows)
-        {
-            if(arrow.gameObject.GetComponent<Arrow>().IsCollisionFinalPoint)
-            {
-                isFinalMovement = true;
-                isMoving = false;
-                break;
-            }
         }
     }
 
@@ -73,7 +60,6 @@ public class ArrowContainerMovement : MonoBehaviour
     private void FinalMovement()
     {
         transform.position += Vector3.forward * movementSpeed * Time.deltaTime;
-        
-        transform.position = Vector3.MoveTowards (transform.position, new Vector3(0f, transform.position.y,transform.position.z), speedForLeftRightMovement * Time.deltaTime);
+        transform.position = Vector3.MoveTowards (transform.position, new Vector3(0f, transform.position.y,transform.position.z), speedForLeftRightMovement/4.0f * Time.deltaTime);
     }
 }

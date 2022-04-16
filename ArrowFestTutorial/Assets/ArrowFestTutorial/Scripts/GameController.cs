@@ -2,42 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
     [SerializeField] private Transform levelCompletedPanel;
     [SerializeField] private Transform failPanel;
+    [SerializeField] private Transform HoldAndMovePanel;
+    [SerializeField] private Text scoreText;
+    
+    private int score;
 
-    private bool isLevelCompleted = false;
-    private bool isFail = false;
-
-    public bool IsLevelCompleted { get {return isLevelCompleted;} set {isLevelCompleted = value;}}
-    public bool IsFail { get {return isFail;} set {isFail = value;}}
-
+    public int Score { get { return score; }  set { score = value; }}
 
     void Start()
     {
+        score = 0;
+        
         levelCompletedPanel.gameObject.SetActive(false);
         failPanel.gameObject.SetActive(false);
+        HoldAndMovePanel.gameObject.SetActive(true);
     }
 
     void Update()
     {
-        if(IsLevelCompleted) Invoke("ActivateLevelCompletedPanel", 2.0f);
-        if(isFail) failPanel.gameObject.SetActive(true);
+        if (Input.touchCount > 0 || Input.anyKeyDown)
+        {
+            HoldAndMovePanel.gameObject.SetActive(false);
+        }
     }
+    
 
     public void PlayAgain()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    void ActivateLevelCompletedPanel() 
+    public void ActivateLevelCompletedPanel() 
     {
+        scoreText.text = score.ToString();
         levelCompletedPanel.gameObject.SetActive(true);
+        FindObjectOfType<AudioManager>().Play("LevelCompleted");
     }
-    void ActivateFailPanel() 
+
+    public void ActivateFailPanel() 
     {
-        levelCompletedPanel.gameObject.SetActive(true);
+        failPanel.gameObject.SetActive(true);
     }
 }

@@ -9,17 +9,23 @@ public class ArrowContainer : MonoBehaviour
     [SerializeField] private Transform arrowPrefab;
     [SerializeField] private List<Transform> arrows = new List<Transform>();
     [SerializeField] private GameController gameController;
-    [SerializeField] [Range(137.0f, 138.0f)] private float degree = 137.5231367f;   // Farklı Dağıtma Açıları(Divergence Angle): 137.3°, 137.3692546°, 137.4038819°, 137.4731367°, 137.5077641°, 137.5231367°, 137.553882°, 137.5692547°, 137.6° 
-    [SerializeField] [Range(0.05f, 1.0f)] private float dotScale = 0.1f; // c
-
+    [SerializeField] private Transform arrowContainerBackground;
+    [SerializeField] private TMP_Text arrowCountText;
+    [SerializeField] private ArrowContainerMovement arrowContainerMovement;
+    
+    private float degree = 137.5231367f;   // Farklı Dağıtma Açıları(Divergence Angle): 137.3°, 137.3692546°, 137.4038819°, 137.4731367°, 137.5077641°, 137.5231367°, 137.553882°, 137.5692547°, 137.6° 
+    private float dotScale = 0.1f; // 0.05f <= c <=1.0f
     private int arrowCount;
-
+    private List<Vector2> traverseSpiralPos = new List<Vector2>();
+    private int bowlingPinDecrement = 10;
+    
     public int ArrowCount { get { return arrowCount; } set { arrowCount = value; }}
     public List<Transform> Arrows { get { return arrows; }}
 
     void Start()
     {
         arrowCount = 1;
+        arrowCountText.text = arrowCount.ToString();
 
         Transform firstArrow = Instantiate(arrowPrefab, transform);
         arrows.Add(firstArrow);
@@ -28,19 +34,61 @@ public class ArrowContainer : MonoBehaviour
 
     void Update()
     {
-        if(arrowCount > arrows.Count)
+        
+    }
+
+    private void OnTriggerEnter(Collider col)
+    {
+        if(col.gameObject.tag == "FinalArea")
         {
-            CreateArrow();
+            arrowContainerMovement.IsFinalMovement = true;
+            arrowContainerBackground.gameObject.SetActive(false);
         }
-        else if(arrowCount < arrows.Count)
+        if(col.gameObject.tag == "Gate")
         {
-            DestroyArrow();
+            CalculateNewArrowCount( col.gameObject.GetComponent<Gate>().operatorChoice, 
+                                    col.gameObject.GetComponent<Gate>().valueToCalculate);
+            
+            if(arrowCount > arrows.Count)
+            {
+                CreateArrow();
+            }
+            else if(arrowCount < arrows.Count)
+            {
+                DestroyArrow();
+            }
         }
-        else
+        if(col.gameObject.tag == "Target")
         {
-            CollateArrow();
+            gameController.Score += Mathf.RoundToInt(arrowCount * col.GetComponent<Target>().Multiplier);
+        }
+        if(col.gameObject.tag == "BowlingPin")
+        {
+            arrowCount -= bowlingPinDecrement;
+            if(arrowCount <= 0)
+            {
+                gameObject.SetActive(false);
+                gameObject.GetComponent<BoxCollider>().enabled = false;
+                gameController.ActivateLevelCompletedPanel();
+            }
+        }
+        if(col.gameObject.tag == "EndPoint")
+        {
+            gameObject.SetActive(false);
+            gameObject.GetComponent<BoxCollider>().enabled = false;
+            gameController.ActivateLevelCompletedPanel();
         }
     }
+
+    private void OnTriggerExit(Collider col)
+    {
+        if(col.gameObject.tag == "FinalArea")
+        {
+            CollateArrowForFinal();
+            GetComponent<BoxCollider>().size = new Vector3(3.0f, 1.0f, 6.0f);
+        }
+    }
+
 
     void CreateArrow()
     {
@@ -50,6 +98,7 @@ public class ArrowContainer : MonoBehaviour
             arrows.Add(newArrow);
             newArrow.transform.localPosition = Vector3.zero;
         }
+
         CollateArrow();
     }
 
@@ -61,6 +110,7 @@ public class ArrowContainer : MonoBehaviour
             arrows.RemoveAt(i);
             Destroy(arrowToDestroy.gameObject);
         }
+
         CollateArrow();
     }
 
@@ -75,26 +125,81 @@ public class ArrowContainer : MonoBehaviour
         }
     }
 
-    public void CalculateArrow(string opr, int value)
+    public void CalculateNewArrowCount(string opr, int value)
     {
         if(opr == "Add") arrowCount += value; 
         else if(opr == "Subtract") arrowCount -= value; 
         else if(opr == "Multiply") arrowCount *= value; 
         else if(opr == "Divide") arrowCount /= value;
 
-        arrowCount = Mathf.Clamp(arrowCount, 0, 360);
+        arrowCount = Mathf.Clamp(arrowCount, 0, 720);
+        arrowCountText.text = arrowCount.ToString();
 
         CheckArrowCount();
     }
 
+    // if arrow count is zero, FAIL.
     void CheckArrowCount()
     {
-
-        // Oyun içinde arrow count 0 olduğunda gameController içindeki Fail paneli aktif edilir.
         if(arrowCount <= 0)
         {
             gameObject.SetActive(false);
-            gameController.IsFail = true;
+            gameController.ActivateFailPanel();
         }
     }
+    
+    void CollateArrowForFinal()
+    {
+        int column = ((float)arrows.Count / 50) < 10 ? Mathf.CeilToInt((float)arrows.Count / 50) : 10;
+        int row = Mathf.CeilToInt((float)arrows.Count / column);
+        float distance = arrowPrefab.localScale.x * 0.1f;
+
+        TraverseSpiral(column, row, arrows.Count);
+
+        for (int i = 0; i < arrows.Count; i++)
+        {
+            arrows[i].localPosition = new Vector3(  traverseSpiralPos[i].x * distance,
+                                                    traverseSpiralPos[i].y * distance,
+                                                    0f);
+        }
+    }
+
+    
+
+    // https://www.baeldung.com/cs/looping-spiral
+    private List<Vector2> TraverseSpiral(int column, int row, int count) 
+    {
+        traverseSpiralPos.Clear();
+
+        float x = 0;
+        float y = 0;
+        float dx = 0;
+        float dy = -1;
+
+        float t;
+
+        for (int i = 0; i < Mathf.Pow(Mathf.Max(row, column), 2); i++)
+        { 
+            if((x > -row / 2.0f  && x <= row / 2.0f ) && (y > -column / 2.0f && y <= column / 2.0f))
+            {        
+                traverseSpiralPos.Add(new Vector2(x, y));
+            }
+            if(x == y || (x == -y && x < 0) || (x == 1 - y && x > 0))
+            {
+                t = dx;
+                dx = -dy;
+                dy = t;
+            }
+
+            x += dx;
+            y += dy;
+
+            if(traverseSpiralPos.Count >= count)
+            {
+                break;
+            }
+        }
+        return traverseSpiralPos;
+    }
+
 }
